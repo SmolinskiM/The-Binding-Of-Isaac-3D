@@ -2,5 +2,5 @@
 public class StatsBoost
 {
     public Stats stats;
-    public int statsValue;
+    public float statsValue;
 }

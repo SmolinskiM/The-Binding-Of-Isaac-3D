@@ -1,14 +1,17 @@
 public enum Stats
 {
-    Damage,
-    TearsUp,
+    CanFly,
+    DamageUp,
+    TearsPerSecend,
     DamageMultiplier,
-    Range,
+    RangeUp,
     HealthUp,
     HealthRestore,
     SpeedUp,
     LuckUp,
-
+    Money,
+    Key,
+    Bomb
 }
 
 public enum ItemPools
@@ -20,5 +23,13 @@ public enum ItemPools
     BossRoom,
     Shop,
     Chest
+}
 
+public enum Heart
+{
+    BlueHeart,
+    BlackHeart,
+    RedHeart,
+    HalfBlueHeart,
+    HalfBlackHeart
 }
