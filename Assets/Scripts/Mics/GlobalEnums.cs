@@ -25,11 +25,16 @@ public enum ItemPools
     Chest
 }
 
-public enum Heart
+public enum HeartColor
 {
-    BlueHeart,
-    BlackHeart,
-    RedHeart,
-    HalfBlueHeart,
-    HalfBlackHeart
+    Blue,
+    Red,
+    Black
+}
+
+public enum HeartSize
+{
+    Empty,
+    Half,
+    Full
 }

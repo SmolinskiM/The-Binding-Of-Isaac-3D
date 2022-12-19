@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using System;
 
 public class ObjectPooling<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class ObjectPooling<T> : MonoBehaviour where T : MonoBehaviour
 
     private T CreateObject()
     {
-        T _object = Instantiate(objectPrefab, mainObject.position, Quaternion.identity);
+        T _object = Instantiate(objectPrefab, mainObject.position, Quaternion.identity, mainObject);
         return _object;
     }
 }

@@ -21,10 +21,10 @@ public class Player : SingletoneMonobehaviour<Player>
     private float tearsPerSecend = 10;
     private float damageMultiplier;
     private float range = 10;
-    private int heartContener;
-    private int heartInContener;
+    private int heartsContener;
+    private float heartInContener;
     private int luck;
-    private List<Heart> hearts;
+    private List<HeartData> coloredHearts;
 
     // status
     private bool isPlayerImmoltar;
@@ -42,10 +42,11 @@ public class Player : SingletoneMonobehaviour<Player>
     private float verticalRotation = 0;
     
     private ObjectPooling<Tear> objectPooling;
+    private PlayerUI playerUI;
+
 
     private const int SHOT_TEAR_POWER = 100;
     private const float VERTICAL_ROTATION_LIMIT = 90f;
-
 
     //property
     public bool IsCanFly { get { return isCanFly; } }
@@ -95,7 +96,7 @@ public class Player : SingletoneMonobehaviour<Player>
         damage = characterStats.Damage;
         tearsPerSecend = characterStats.TearsPerSecend;
         damageMultiplier = characterStats.DamageMultiplier;
-        heartContener = characterStats.HeartContener;
+        heartsContener = characterStats.HeartContener;
         heartInContener = characterStats.HeartInContener;
         luck = characterStats.Luck;
 
@@ -113,22 +114,17 @@ public class Player : SingletoneMonobehaviour<Player>
 
         for(int i = 0; i < damage; i++)
         {
-            if (hearts.Count != 0)
+            if (coloredHearts.Count != 0)
             {
-                if (hearts[^1] == Heart.HalfBlackHeart)
+                if(coloredHearts[^1].heartSize == HeartSize.Half)
                 {
-                    OnAreaDamage?.Invoke(40);
-                }
-                else if(hearts[^1] == Heart.BlackHeart)
-                {
-                    hearts[^1] = Heart.HalfBlackHeart;
-                }
-                else if(hearts[^1] == Heart.HalfBlueHeart)
-                {
-                    hearts[^1] = Heart.HalfBlueHeart;
+                    if (coloredHearts[^1].heartColor == HeartColor.Black)
+                    {
+                        OnAreaDamage?.Invoke(40);
+                    }
+                    coloredHearts.RemoveAt(coloredHearts.Count - 1);
                 }
 
-                hearts.RemoveAt(hearts.Count - 1);
                 return;
             }
 
@@ -146,15 +142,15 @@ public class Player : SingletoneMonobehaviour<Player>
         immoltarTimeLeft = IMMOLTAR_TIME;
     }
 
-    public void CollectHeart(Heart heart)
+    public void CollectHeart(HeartData heartData)
     {
-        if(heart == Heart.RedHeart)
+        if(heartData.heartColor == HeartColor.Red)
         {
             heartInContener += 1;
             return;
         }
 
-        hearts.Add(heart);
+        coloredHearts.Add(heartData);
     }
 
     private void Movement()
