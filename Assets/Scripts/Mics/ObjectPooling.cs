@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 using System;
 
 public class ObjectPooling<T> : MonoBehaviour where T : MonoBehaviour
-{
+{ 
     private IObjectPool<T> pool;
     private T objectPrefab;
     private Transform mainObject;
@@ -13,19 +13,29 @@ public class ObjectPooling<T> : MonoBehaviour where T : MonoBehaviour
     public IObjectPool<T> Pool { get { return pool; } }
 
 
-    public ObjectPooling(T objectPrefab, Transform mainObject)
+    public ObjectPooling(T objectPrefab, Transform mainObject, Action<T> OnTakeFromPool = null, Action<T> OnReleaseToPool = null)
     {
+        if(OnTakeFromPool == null)
+        {
+            OnTakeFromPool = OnTake;
+        }
+
+        if(OnReleaseToPool == null)
+        {
+            OnReleaseToPool = OnRelease;
+        }
+
         this.mainObject = mainObject;
         this.objectPrefab = objectPrefab;
         pool = new ObjectPool<T>(CreateObject, OnTakeFromPool, OnReleaseToPool);
     }
 
-    private void OnTakeFromPool(T _object)
+    private void OnTake(T _object)
     {
         _object.gameObject.SetActive(true);
     }
 
-    private void OnReleaseToPool(T _object)
+    private void OnRelease(T _object)
     {
         _object.gameObject.SetActive(false);
     }

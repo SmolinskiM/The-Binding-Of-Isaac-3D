@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class HeartDisplay : MonoBehaviour
 {
     [SerializeField] private Transform heartHolder;
+    [SerializeField] private Transform DisableHeartHolder;
+
     [SerializeField] private Image heartImagePrefab;
 
     [SerializeField] private Sprite emptyHeartSprite;
@@ -21,7 +23,7 @@ public class HeartDisplay : MonoBehaviour
 
     private void Awake()
     {
-        objectPooling = new ObjectPooling<Image>(heartImagePrefab, heartHolder);
+        objectPooling = new ObjectPooling<Image>(heartImagePrefab, heartHolder, OnTake, OnRelease);
     }
 
     private void Start()
@@ -62,18 +64,28 @@ public class HeartDisplay : MonoBehaviour
                     continue;
                 }
 
-                heartsRedList[i].heartSize++;
-                Image heartRedImage =  heartHolder.GetChild(i).GetComponent<Image>();
-                heartRedImage.sprite = heartSizeDictionary[heartsRedList[i].heartSize];
+                if(heartsRedList[i].heartSize == HeartSize.Empty)
+                {
+                    heartsRedList[i].heartSize = heart.heartSize;
+                    heart.heartSize = HeartSize.Empty;
+                }
+                else
+                {
+                    heartsRedList[i].heartSize++;
+                    heart.heartSize--;
+                }
 
-                heart.heartSize--;
+                Image heartRedImage = heartHolder.GetChild(i).GetComponent<Image>();
+                heartRedImage.sprite = heartSizeDictionary[heartsRedList[i].heartSize];
 
                 if(heart.heartSize == HeartSize.Empty)
                 {
                     return;
                 }
             }
+            return;
         }
+
         Image heartColoredImage;
 
         for (int i = 0; i < heartsColoredList.Count; i++)
@@ -86,7 +98,7 @@ public class HeartDisplay : MonoBehaviour
             if (heartsColoredList[i].heartSize == HeartSize.Half)
             {
                 heartsColoredList[i].heartSize++;
-                heartColoredImage = heartHolder.GetChild(i).GetComponent<Image>();
+                heartColoredImage = heartHolder.GetChild(i + heartsRedList.Count).GetComponent<Image>();
                 heartColoredImage.sprite = heartSizeDictionary[heartsColoredList[i].heartSize];
                 heart.heartSize--;
 
@@ -137,5 +149,17 @@ public class HeartDisplay : MonoBehaviour
             heartsColoredList[^1].heartSize--;
             heartColoredImage.sprite = heartSizeDictionary[HeartSize.Half];
         }
+    }
+
+    private void OnRelease(Image heart)
+    {
+        heart.gameObject.SetActive(false);
+        heart.transform.SetParent(DisableHeartHolder);
+    }
+
+    private void OnTake(Image heart)
+    {
+        heart.gameObject.SetActive(true);
+        heart.transform.SetParent(heartHolder);
     }
 }
