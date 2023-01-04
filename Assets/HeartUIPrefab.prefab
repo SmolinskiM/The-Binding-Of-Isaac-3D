@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 198634529118212871}
   - component: {fileID: 198634529118212873}
+  - component: {fileID: 8945171768284572737}
   - component: {fileID: 198634529118212872}
   m_Layer: 0
-  m_Name: HeartImagePrefab
+  m_Name: HeartUIPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,6 +47,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198634529118212870}
   m_CullTransparentMesh: 1
+--- !u!114 &8945171768284572737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198634529118212870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4306bf7146635f647a26a3639add6c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &198634529118212872
 MonoBehaviour:
   m_ObjectHideFlags: 0

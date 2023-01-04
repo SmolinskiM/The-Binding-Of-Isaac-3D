@@ -1,10 +1,10 @@
 [System.Serializable]
-public class HeartData
+public class Heart
 {
     public HeartColor heartColor;
     public HeartSize heartSize;
 
-    public HeartData(HeartColor heartColor, HeartSize heartSize)
+    public Heart(HeartColor heartColor, HeartSize heartSize)
     {
         this.heartColor = heartColor;
         this.heartSize = heartSize;

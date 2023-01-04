@@ -21,18 +21,10 @@ public class Player : SingletoneMonobehaviour<Player>
     private float tearsPerSecend = 10;
     private float damageMultiplier;
     private float range = 10;
-    private int heartsContener;
-    private float heartInContener;
     private int luck;
-    private List<HeartData> coloredHearts;
 
     // status
-    private bool isPlayerImmoltar;
-
-    private float immoltarTimeLeft;
-    private const float IMMOLTAR_TIME = 1;
-
-    private float tearCooldownLeft = 0;
+    private float tearCooldownLeft;
 
     private int money;
     private int key;
@@ -42,8 +34,6 @@ public class Player : SingletoneMonobehaviour<Player>
     private float verticalRotation = 0;
     
     private ObjectPooling<Tear> objectPooling;
-    private PlayerUI playerUI;
-
 
     private const int SHOT_TEAR_POWER = 100;
     private const float VERTICAL_ROTATION_LIMIT = 90f;
@@ -63,6 +53,7 @@ public class Player : SingletoneMonobehaviour<Player>
     private void Update()
     {
         Movement();
+
         if(tearCooldownLeft > 0)
         {
             tearCooldownLeft -= Time.deltaTime;
@@ -77,15 +68,6 @@ public class Player : SingletoneMonobehaviour<Player>
         {
             UseUsableItem();
         }
-
-        if(immoltarTimeLeft > 0)
-        {
-            immoltarTimeLeft -= Time.deltaTime;
-        }
-        else
-        {
-            isPlayerImmoltar = false;
-        }
     }
 
     public void SetStartStats(CharacterStats characterStats)
@@ -96,61 +78,11 @@ public class Player : SingletoneMonobehaviour<Player>
         damage = characterStats.Damage;
         tearsPerSecend = characterStats.TearsPerSecend;
         damageMultiplier = characterStats.DamageMultiplier;
-        heartsContener = characterStats.HeartContener;
-        heartInContener = characterStats.HeartInContener;
         luck = characterStats.Luck;
 
         money = characterStats.Money;
         key = characterStats.Key;
         bomb = characterStats.Bomb;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        if(isPlayerImmoltar)
-        {
-            return;
-        }
-
-        for(int i = 0; i < damage; i++)
-        {
-            if (coloredHearts.Count != 0)
-            {
-                if(coloredHearts[^1].heartSize == HeartSize.Half)
-                {
-                    if (coloredHearts[^1].heartColor == HeartColor.Black)
-                    {
-                        OnAreaDamage?.Invoke(40);
-                    }
-                    coloredHearts.RemoveAt(coloredHearts.Count - 1);
-                }
-
-                return;
-            }
-
-            heartInContener -= damage;
-
-            if (heartInContener > 0)
-            {
-                return;
-            }
-
-            Die();
-        }
-
-        isPlayerImmoltar = true;
-        immoltarTimeLeft = IMMOLTAR_TIME;
-    }
-
-    public void CollectHeart(HeartData heartData)
-    {
-        if(heartData.heartColor == HeartColor.Red)
-        {
-            heartInContener += 1;
-            return;
-        }
-
-        coloredHearts.Add(heartData);
     }
 
     private void Movement()
