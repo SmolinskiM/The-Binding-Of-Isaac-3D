@@ -1,32 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class CharacterStats : ScriptableObject
 {
-    private bool isCanFly;
-    private float speed;
-    private float damage;
-    private float tearsPerSecend;
-    private float damageMultiplier;
-    private float range;
-    private int heartContener;
-    private int heartInContener;
-    private int luck;
+    [SerializeField] private PlayerStats playerStats;
 
     private int money;
     private int key;
     private int bomb;
 
-    public bool IsCanFly { get { return isCanFly; } }
-    public float Speed { get { return speed; } }
-    public float Damage { get { return damage; } }
-    public float TearsPerSecend { get { return tearsPerSecend; } }
-    public float DamageMultiplier { get { return damageMultiplier; } }
-    public float Range { get { return range; } }
-    public int HeartContener { get { return heartContener; } }
-    public int HeartInContener { get { return heartInContener; } }
-    public int Luck { get { return luck; } }
+    public bool IsCanFly { get { return playerStats.isCanFly; } set { playerStats.isCanFly = value; } }
+    public float Speed { get { return playerStats.speed; } }
+    public float Damage { get { return playerStats.damage; } }
+    public float TearsPerSecend { get { return playerStats.tearsPerSecend; } }
+    public float DamageMultiplier { get { return playerStats.damageMultiplier; } }
+    public float Range { get { return playerStats.range; } }
+    public int Luck { get { return playerStats.luck; } }
 
 
     public int Money { get { return money; } }

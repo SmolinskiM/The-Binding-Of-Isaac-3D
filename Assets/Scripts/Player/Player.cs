@@ -15,13 +15,8 @@ public class Player : SingletoneMonobehaviour<Player>
     [SerializeField] private Camera _camera;
 
     //stats
-    private bool isCanFly;
-    private float speed = 1;
-    private float damage;
-    private float tearsPerSecend = 10;
-    private float damageMultiplier;
-    private float range = 10;
-    private int luck;
+    private CharacterStats characterStats;
+    private HeartSystem heartSystem;
 
     // status
     private float tearCooldownLeft;
@@ -39,7 +34,6 @@ public class Player : SingletoneMonobehaviour<Player>
     private const float VERTICAL_ROTATION_LIMIT = 90f;
 
     //property
-    public bool IsCanFly { get { return isCanFly; } }
     public int Money { get { return money; } }
     public int Key { get { return key; } }
     public int Bomb { get { return bomb; } }
@@ -73,12 +67,7 @@ public class Player : SingletoneMonobehaviour<Player>
     public void SetStartStats(CharacterStats characterStats)
     {
         // player stats = character stats
-        isCanFly = characterStats.IsCanFly;
-        speed = characterStats.Speed;
-        damage = characterStats.Damage;
-        tearsPerSecend = characterStats.TearsPerSecend;
-        damageMultiplier = characterStats.DamageMultiplier;
-        luck = characterStats.Luck;
+        this.characterStats = characterStats;
 
         money = characterStats.Money;
         key = characterStats.Key;
@@ -88,7 +77,7 @@ public class Player : SingletoneMonobehaviour<Player>
     private void Movement()
     {
         Vector3 movementDirection = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal")) * Time.deltaTime;
-        transform.Translate(movementDirection * speed);
+        transform.Translate(movementDirection * characterStats.Speed);
 
         float horizontalRotation = Input.GetAxis("Mouse X");
         transform.Rotate(0, horizontalRotation, 0);
@@ -107,10 +96,10 @@ public class Player : SingletoneMonobehaviour<Player>
 
         //Attacking
         Tear tear = objectPooling.Pool.Get();
-        tear.SetDamage(damage * damageMultiplier);
-        tear.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * range * SHOT_TEAR_POWER);
+        tear.SetDamage(characterStats.Damage * characterStats.DamageMultiplier);
+        tear.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * characterStats.Range * SHOT_TEAR_POWER);
         OnTearEfectsEvent?.Invoke(tear);
-        tearCooldownLeft = 1 / tearsPerSecend;
+        tearCooldownLeft = 1 / characterStats.TearsPerSecend;
     }
 
     private void UseUsableItem()
@@ -118,26 +107,9 @@ public class Player : SingletoneMonobehaviour<Player>
         OnUseItemEfectsEvent?.Invoke();
     }
 
-    private void ApplyStatsBoost(StatsBoost statsBoost)
-    {
-        if(statsBoost.stats == Stats.SpeedUp)
-        {
-            speed += statsBoost.statsValue;
-        }
-        else if(statsBoost.stats == Stats.DamageUp)
-        {
-            damage += statsBoost.statsValue;
-        }
-
-        else if(statsBoost.stats == Stats.CanFly)
-        {
-
-        }
-    }
-
     private void ICanFly()
     {
-        isCanFly = true;
+        characterStats.IsCanFly = true;
         _camera.transform.position = new Vector3(0, 1, 0);
     }
 

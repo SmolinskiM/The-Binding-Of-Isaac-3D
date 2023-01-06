@@ -5,12 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ItemData", menuName = "Item/ItemPassive")]
 public class ItemsData : ScriptableObject
 {
-    [SerializeField] private List<StatsBoost> stats;
+    [SerializeField] private List<StatsBoostData> stats;
     [SerializeField] private Sprite itemSprite;
     [SerializeField] private List<ItemPools> itemPools;
 
     public Sprite ItemSprite { get { return itemSprite; } }
-    public List<StatsBoost> Stats { get { return stats; } }
+    public List<StatsBoostData> Stats { get { return stats; } }
     public List<ItemPools> ItemPools { get { return itemPools; } }
 }
 
