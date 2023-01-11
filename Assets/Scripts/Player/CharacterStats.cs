@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[CreateAssetMenu(fileName = "CharacterStats", menuName = "CharacterStats")]
 public class CharacterStats : ScriptableObject
 {
     [SerializeField] private PlayerStats playerStats;
 
-    private int money;
-    private int key;
-    private int bomb;
+    [SerializeField] private int money;
+    [SerializeField] private int key;
+    [SerializeField] private int bomb;
 
     public bool IsCanFly { get { return playerStats.isCanFly; } set { playerStats.isCanFly = value; } }
     public float Speed { get { return playerStats.speed; } }

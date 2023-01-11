@@ -7,4 +7,9 @@ public class SpeedStatsBoost : StatsBoost
     {
         playerStats.speed += valueBoost;
     }
+
+    public override void Remove(PlayerStats playerStats, float valueBoost)
+    {
+        playerStats.speed -= valueBoost;
+    }
 }

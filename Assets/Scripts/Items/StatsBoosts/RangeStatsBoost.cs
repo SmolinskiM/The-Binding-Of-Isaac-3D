@@ -7,4 +7,9 @@ public class RangeStatsBoost : StatsBoost
     {
         playerStats.range += valueBoost;
     }
+
+    public override void Remove(PlayerStats playerStats, float valueBoost)
+    {
+        playerStats.range -= valueBoost;
+    }
 }

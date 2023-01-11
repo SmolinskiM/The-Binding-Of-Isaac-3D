@@ -5,27 +5,21 @@ using System;
 
 public class Player : SingletoneMonobehaviour<Player>
 {
-    public Action OnUseItemEfectsEvent;
-
-    public Action<Tear> OnTearEfectsEvent;
-
-    public Action<int> OnAreaDamage;
-
     [SerializeField] private Tear tearPrefab;
     [SerializeField] private Camera _camera;
 
-    //stats
-    private CharacterStats characterStats;
+    [SerializeField] private CharacterStats characterStats;
+
     private HeartSystem heartSystem;
 
-    // status
     private float tearCooldownLeft;
 
     private int money;
     private int key;
     private int bomb;
 
-    //other
+    private int devilRoomChange;
+
     private float verticalRotation = 0;
     
     private ObjectPooling<Tear> objectPooling;
@@ -33,7 +27,10 @@ public class Player : SingletoneMonobehaviour<Player>
     private const int SHOT_TEAR_POWER = 100;
     private const float VERTICAL_ROTATION_LIMIT = 90f;
 
-    //property
+    public Action OnUseItemEfectsEvent;
+    public Action<Tear> OnTearEfectsEvent;
+    public Action OnAreaDamage;
+
     public int Money { get { return money; } }
     public int Key { get { return key; } }
     public int Bomb { get { return bomb; } }
@@ -41,6 +38,10 @@ public class Player : SingletoneMonobehaviour<Player>
 
     private new void Awake()
     {
+        heartSystem = GetComponent<HeartSystem>();
+        heartSystem.OnTakeDmageOnRedHeart += TakeDamageOnRedHeart;
+        heartSystem.OnTakeDmageOnBlackHeart += TakeDamageOnBlackHeart;
+
         objectPooling = new ObjectPooling<Tear>(tearPrefab, transform);
     }
 
@@ -111,6 +112,25 @@ public class Player : SingletoneMonobehaviour<Player>
     {
         characterStats.IsCanFly = true;
         _camera.transform.position = new Vector3(0, 1, 0);
+    }
+
+    private void TakeDamageOnRedHeart()
+    {
+        devilRoomChange = 1;
+
+        if(heartSystem.HeartsRedList[0].heartSize == HeartSize.Empty)
+        {
+            Die();
+        }
+    }
+
+    private void TakeDamageOnBlackHeart()
+    {
+        OnAreaDamage?.Invoke();
+        if (heartSystem.HeartsColoredList.Count == 0 && heartSystem.HeartsRedList[0].heartSize == HeartSize.Empty)
+        {
+            Die();
+        }
     }
 
     private void Die()

@@ -7,4 +7,9 @@ public class DamageMultiplierStatsBoost : StatsBoost
     {
         playerStats.damageMultiplier *= valueBoost;
     }
+
+    public override void Remove(PlayerStats playerStats, float valueBoost)
+    {
+        playerStats.damageMultiplier /= valueBoost;
+    }
 }

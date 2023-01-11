@@ -6,16 +6,20 @@ using TMPro;
 
 public class PlayerUI : MonoBehaviour
 {
-    private HeartDisplay heartDisplay;
     private Player player;
 
-    private TextMeshProUGUI moneyText;
-    private TextMeshProUGUI keyText;
-    private TextMeshProUGUI bombText;
+    [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private TextMeshProUGUI keyText;
+    [SerializeField] private TextMeshProUGUI bombText;
+
+    private void Awake()
+    {
+        player = Player.Instance;
+    }
 
     private void Start()
     {
-        heartDisplay = GetComponent<HeartDisplay>();
+        UpdateColectable();
     }
 
     private void UpdateColectable()

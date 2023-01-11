@@ -10,6 +10,9 @@ public class HeartSystem : MonoBehaviour
 
     public Action OnUpdateHearts;
 
+    public Action OnTakeDmageOnRedHeart;
+    public Action OnTakeDmageOnBlackHeart;
+
     public List<Heart> HeartsRedList { get { return heartsRedList; } }
     public List<Heart> HeartsColoredList { get { return heartsColoredList; } }
 
@@ -128,6 +131,8 @@ public class HeartSystem : MonoBehaviour
                 }
             }
 
+            OnTakeDmageOnRedHeart?.Invoke();
+
             if (damageTaken == 0)
             {
                 return;
@@ -167,6 +172,11 @@ public class HeartSystem : MonoBehaviour
 
             if(heartsColoredList.Last().heartSize == HeartSize.Empty)
             {
+                if(heartsColoredList.Last().heartColor == HeartColor.Black)
+                {
+                    OnTakeDmageOnBlackHeart?.Invoke();
+                }
+
                 heartsColoredList.Remove(heartsColoredList.Last());
             }
         }

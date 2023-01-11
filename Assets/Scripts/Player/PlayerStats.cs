@@ -3,10 +3,10 @@
 public class PlayerStats
 {
     public bool isCanFly;
-    public float speed = 1;
+    public float speed;
     public float damage;
-    public float tearsPerSecend = 10;
+    public float tearsPerSecend;
     public float damageMultiplier;
-    public float range = 10;
+    public float range;
     public int luck;
 }

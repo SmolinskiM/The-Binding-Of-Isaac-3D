@@ -7,4 +7,9 @@ public class TearsPerSecendStatsBoost : StatsBoost
     {
         playerStats.tearsPerSecend += valueBoost;
     }
+
+    public override void Remove(PlayerStats playerStats, float valueBoost)
+    {
+        playerStats.tearsPerSecend -= valueBoost;
+    }
 }
