@@ -5,14 +5,13 @@ using System;
 
 public class Player : SingletoneMonobehaviour<Player>
 {
-    [SerializeField] private Tear tearPrefab;
+    public Action OnUseItemEfectsEvent;
+    public Action OnAreaDamage;
+
     [SerializeField] private Camera _camera;
 
-    [SerializeField] private CharacterStats characterStats;
-
     private HeartSystem heartSystem;
-
-    private float tearCooldownLeft;
+    private CharacterStats characterStats;
 
     private int money;
     private int key;
@@ -21,43 +20,27 @@ public class Player : SingletoneMonobehaviour<Player>
     private int devilRoomChange;
 
     private float verticalRotation = 0;
-    
-    private ObjectPooling<Tear> objectPooling;
 
-    private const int SHOT_TEAR_POWER = 100;
+    private PlayerAttack playerAttack;
+
     private const float VERTICAL_ROTATION_LIMIT = 90f;
-
-    public Action OnUseItemEfectsEvent;
-    public Action<Tear> OnTearEfectsEvent;
-    public Action OnAreaDamage;
 
     public int Money { get { return money; } }
     public int Key { get { return key; } }
     public int Bomb { get { return bomb; } }
-    public ObjectPooling<Tear> ObjectPooling { get { return objectPooling; } }
+    public PlayerAttack PlayerAttack { get { return playerAttack; } }
+    public CharacterStats CharacterStats { get { return characterStats; } }
 
     private new void Awake()
     {
         heartSystem = GetComponent<HeartSystem>();
         heartSystem.OnTakeDmageOnRedHeart += TakeDamageOnRedHeart;
         heartSystem.OnTakeDmageOnBlackHeart += TakeDamageOnBlackHeart;
-
-        objectPooling = new ObjectPooling<Tear>(tearPrefab, transform);
     }
 
     private void Update()
     {
         Movement();
-
-        if(tearCooldownLeft > 0)
-        {
-            tearCooldownLeft -= Time.deltaTime;
-        }
-
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            ShootTear();
-        }
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
@@ -69,6 +52,7 @@ public class Player : SingletoneMonobehaviour<Player>
     {
         // player stats = character stats
         this.characterStats = characterStats;
+        playerAttack.Player = this;
 
         money = characterStats.Money;
         key = characterStats.Key;
@@ -86,21 +70,6 @@ public class Player : SingletoneMonobehaviour<Player>
         verticalRotation -= Input.GetAxis("Mouse Y");
         verticalRotation = Mathf.Clamp(verticalRotation , -VERTICAL_ROTATION_LIMIT, VERTICAL_ROTATION_LIMIT);
         _camera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
-    }
-
-    private void ShootTear()
-    {
-        if(tearCooldownLeft > 0)
-        {
-            return;
-        }
-
-        //Attacking
-        Tear tear = objectPooling.Pool.Get();
-        tear.SetDamage(characterStats.Damage * characterStats.DamageMultiplier);
-        tear.GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.forward) * characterStats.Range * SHOT_TEAR_POWER);
-        OnTearEfectsEvent?.Invoke(tear);
-        tearCooldownLeft = 1 / characterStats.TearsPerSecend;
     }
 
     private void UseUsableItem()

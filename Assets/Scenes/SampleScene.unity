@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 10983072}
   - component: {fileID: 10983071}
   - component: {fileID: 10983075}
+  - component: {fileID: 10983077}
   - component: {fileID: 10983074}
   - component: {fileID: 10983073}
   - component: {fileID: 10983076}
@@ -156,7 +157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e900f7949a8c7d4c99b82570f89f323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tearPrefab: {fileID: 8579341768698586643, guid: 17af7027745cd71449ea3adb856bccd9, type: 3}
   _camera: {fileID: 963194227}
   characterStats: {fileID: 11400000, guid: 865542376a2bbe142aba88797fbf9dd6, type: 2}
 --- !u!4 &10983072
@@ -229,6 +229,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a64b63f758878468afecd0883356dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &10983077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10983070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ba921e4a8cead4e94ea5d29a90d200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tearPrefab: {fileID: 8579341768698586643, guid: 17af7027745cd71449ea3adb856bccd9, type: 3}
 --- !u!1 &175060678
 GameObject:
   m_ObjectHideFlags: 0

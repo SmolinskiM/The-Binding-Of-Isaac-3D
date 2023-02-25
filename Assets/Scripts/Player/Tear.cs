@@ -22,6 +22,6 @@ public class Tear : MonoBehaviour
             collision.gameObject.GetComponent<Monster>().HitMonster(damage);
         }
 
-        Player.Instance.ObjectPooling.Pool.Release(this);
+        Player.Instance.PlayerAttack.ObjectPooling.Pool.Release(this);
     }
 }
